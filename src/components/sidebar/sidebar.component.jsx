@@ -9,6 +9,7 @@ const Sidebar = () => {
     staj: false,
     admin: false,
     ders: false,
+    sinav: false,
   });
 
   const { user } = useUserContext();
@@ -54,12 +55,6 @@ const Sidebar = () => {
               </Link>
               {!isStudent && (
                 <>
-                  <Link
-                    to="/showMyCourses"
-                    className="block px-4 py-2 hover:bg-blue-700 rounded"
-                  >
-                    Derslerim
-                  </Link>
                   <Link
                     to="/showMyStudents"
                     className="block px-4 py-2 hover:bg-blue-700 rounded"
@@ -146,6 +141,39 @@ const Sidebar = () => {
                   >
                     Derslerim
                   </Link>
+                  <Link
+                    to="/studentCourseRegisteration"
+                    className="block px-4 py-2 hover:bg-blue-700 rounded"
+                  >
+                    Ders Kayıt
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/showMyCourses"
+                    className="block px-4 py-2 hover:bg-blue-700 rounded"
+                  >
+                    Derslerim
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Ders */}
+        <div>
+          <button
+            className="w-full text-left px-4 py-2 hover:bg-blue-800"
+            onClick={() => toggleSection("sinav")}
+          >
+            Sınav
+          </button>
+          {openSections.sinav && (
+            <div className="ml-4">
+              {isStudent ? (
+                <>
                   <Link
                     to="/showStudentGrades"
                     className="block px-4 py-2 hover:bg-blue-700 rounded"

@@ -56,36 +56,6 @@ const ShowUser = () => {
     fetchUser();
   }, []);
 
-  const handleDelete = async (courseId) => {
-    const result = confirm("Emin misiniz ?");
-    if (result) {
-      const formData = new FormData();
-      formData.append("courseId", courseId);
-      const res = await fetch(API_URL + "deleteCourse/", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        toast.error("Hata oluştu");
-      } else {
-        const data = await res.json();
-
-        if (data.success) {
-          toast.success("Başarıyla Silindi");
-
-          setCourses(courses.filter((course) => course.id !== courseId));
-        } else {
-          toast.error("Hata oluştu...");
-        }
-      }
-    }
-  };
-
-  const handleEdit = (courseId) => {
-    navigate("/editCourse/" + courseId);
-  };
-
   if (loading) {
     return <LoadingUi />;
   }
@@ -107,6 +77,9 @@ const ShowUser = () => {
               {isStudent && (
                 <th className="border px-4 py-2">Öğrenci Numarası</th>
               )}
+              {!isStudent && (
+                <th className="border px-4 py-2">Bölüm</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -116,6 +89,9 @@ const ShowUser = () => {
               <td className="border px-4 py-2">{user.surname}</td>
               {isStudent && (
                 <td className="border px-4 py-2">{user.username}</td>
+              )}
+              {!isStudent && (
+                <td className="border px-4 py-2">{user.department_name}</td>
               )}
             </tr>
           </tbody>

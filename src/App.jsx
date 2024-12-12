@@ -27,6 +27,7 @@ import GradeExam from "./pages/academic/gradeExam/gradeExam.page";
 import ShowStudentCourses from "./pages/student/showStudentCourses/showStudentCourses.page";
 import ShowStudentGrades from "./pages/student/showStudentGrades/showStudentGrades.page";
 import ShowStudentExams from "./pages/student/showStudentExams/showStudentExams.page";
+import StudentCourseRegisteration from "./pages/student/studentCourseRegisteration/studentCourseRegisteration.page";
 
 const App = () => {
   return (
@@ -68,6 +69,10 @@ const App = () => {
           <Route path="showStudentCourses" element={<ShowStudentCourses />} />
           <Route path="showStudentGrades" element={<ShowStudentGrades />} />
           <Route path="showStudentExams" element={<ShowStudentExams />} />
+          <Route
+            path="studentCourseRegisteration"
+            element={<StudentCourseRegisteration />}
+          />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Navigate to="/" replace />} />

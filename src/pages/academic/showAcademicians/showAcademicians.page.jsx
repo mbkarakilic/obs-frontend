@@ -108,6 +108,7 @@ const ShowAcademicians = () => {
               <th className="border px-4 py-2">İsim</th>
               <th className="border px-4 py-2">Soyisim</th>
               <th className="border px-4 py-2">Yöneticilik</th>
+              <th className="border px-4 py-2">Bölüm</th>
               <th className="border px-4 py-2">Verdiği Dersler</th>
               <th className="border px-4 py-2">İşlemler</th>
             </tr>
@@ -125,6 +126,7 @@ const ShowAcademicians = () => {
                     <span>&#10005;</span>
                   )}
                 </td>
+                <td className="border px-4 py-2">{academicians.department_name}</td>
                 <td className="border px-4 py-2">
                   {academicians.courses.length > 0
                     ? academicians.courses.join(", ")

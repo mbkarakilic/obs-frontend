@@ -13,6 +13,7 @@ const AddExam = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedDate, setSelectedDate] = useState(""); // Tarih state'i
+  const [percent, setPercent] = useState(0); // Tarih state'i
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [type, setType] = useState("");
 
@@ -52,8 +53,10 @@ const AddExam = () => {
 
     const formData = new FormData();
     formData.append("course_id", selectedCourse);
+    formData.append("academic_id", user.id);
     formData.append("date", selectedDate);
     formData.append("type", type);
+    formData.append("percent", percent);
 
     const res = await fetch(API_URL + "addExam/", {
       method: "post",
@@ -113,6 +116,23 @@ const AddExam = () => {
             </option>
           ))}
         </select>
+        <div className="space-y-4">
+          <label htmlFor="percent" className="block text-lg font-semibold">
+            Yüzdelik
+          </label>
+          <input
+            id="percent"
+            type="number"
+            value={percent}
+            min={1}
+            max={100}
+            onChange={(e) => {
+              setPercent(e.target.value);
+            }}
+            required
+            className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+        </div>
         {/* Tarih Girişi */}
         <input
           type="date"

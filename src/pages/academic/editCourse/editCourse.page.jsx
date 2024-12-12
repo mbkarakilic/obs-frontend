@@ -11,9 +11,10 @@ const EditCourse = () => {
   const { id } = params;
 
   const [courseName, setCourseName] = useState("");
-  const [departmentId, setDepartmentId] = useState(""); // Yeni departman ID durumu
-  const [semester, setSemester] = useState(""); // Yeni departman ID durumu
-  const { departments } = useFetchDepartments(); // Departman listesini getir
+  const [departmentId, setDepartmentId] = useState("");
+  const [semester, setSemester] = useState("");
+  const [ects, setEcts] = useState(""); // ECTS state
+  const { departments } = useFetchDepartments();
 
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -29,15 +30,16 @@ const EditCourse = () => {
       });
 
       if (!res.ok) {
-        toast.error("Bir hata oluştu");
+        toast.error("An error occurred");
         setError(true);
       } else {
         const data = await res.json();
         if (data.success) {
-          const { name, department_id, semester: sem } = data.course;
+          const { name, department_id, semester: sem, ects: courseEcts } = data.course;
           setCourseName(name);
-          setDepartmentId(department_id); // Mevcut departman ID'sini ayarla
+          setDepartmentId(department_id);
           setSemester(sem);
+          setEcts(courseEcts); // ECTS değerini al
         } else {
           setError(true);
         }
@@ -56,8 +58,9 @@ const EditCourse = () => {
     const formData = new FormData();
     formData.append("id", id);
     formData.append("courseName", courseName);
-    formData.append("department_id", departmentId); // Yeni departman ID'sini gönder
-    formData.append("semester", semester); // Yeni departman ID'sini gönder
+    formData.append("department_id", departmentId);
+    formData.append("semester", semester);
+    formData.append("ects", ects); // ECTS gönder
 
     const res = await fetch(API_URL + "editCourse/", {
       method: "POST",
@@ -65,37 +68,35 @@ const EditCourse = () => {
     });
 
     if (!res.ok) {
-      toast.error("Hata oluştu");
+      toast.error("Hata!");
     } else {
       const data = await res.json();
       if (data.success) {
-        toast.success(
-          "Ders düzenlendi. Kayıtlı Dersler Sayfasına yönlendiriliyorsunuz..."
-        );
+        toast.success("Ders Düzenlendi! Dersler Sayfasına Yönlendiriliyorsunuz...");
         setTimeout(() => {
           navigate("/showCourses");
         }, 1500);
       } else {
-        toast.error("Hata oluştu");
+        toast.error("Hata!");
       }
     }
   };
 
   if (loading) {
-    return <h1>Yükleniyor...</h1>;
+    return <h1>Loading...</h1>;
   }
 
   if (error) {
-    return <h1>Hata...</h1>;
+    return <h1>Error...</h1>;
   }
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h1 className="text-3xl font-bold">Düzenle</h1>
+      <h1 className="text-3xl font-bold">Edit Course</h1>
       <input
         type="text"
         className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Ders Adı"
+        placeholder="Course Name"
         value={courseName}
         onChange={(e) => setCourseName(e.target.value)}
       />
@@ -105,7 +106,7 @@ const EditCourse = () => {
         className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="" disabled>
-          Departman Seçiniz
+          Select Department
         </option>
         {departments.map((department) => (
           <option key={department.id} value={department.id}>
@@ -119,7 +120,7 @@ const EditCourse = () => {
         className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="" disabled>
-          Dönem Seçiniz
+          Select Semester
         </option>
         {years.map((year) => (
           <option key={year.id} value={year.id}>
@@ -127,12 +128,21 @@ const EditCourse = () => {
           </option>
         ))}
       </select>
+      <input
+        type="number"
+        min="1"
+        max="6"
+        className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="ECTS"
+        value={ects}
+        onChange={(e) => setEcts(e.target.value)}
+      />
       <button
         type="submit"
         className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 active:bg-blue-700"
         disabled={buttonDisabled}
       >
-        Kaydet
+        Save
       </button>
     </Form>
   );

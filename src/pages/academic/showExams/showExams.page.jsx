@@ -86,6 +86,7 @@ const ShowExams = () => {
                   <th className="border px-4 py-2">Tarih</th>
                   <th className="border px-4 py-2">Ders</th>
                   <th className="border px-4 py-2">Tür</th>
+                  <th className="border px-4 py-2">Yüzdelik</th>
                   <th className="border px-4 py-2">İşlemler</th>
                 </tr>
               </thead>
@@ -100,6 +101,7 @@ const ShowExams = () => {
                           .name
                       }
                     </td>
+                    <td className="border px-4 py-2">{exam.exam_percent}</td>
                     <td className="border px-4 py-2">
                       <button
                         className="bg-red-500 rounded p-2 text-white"

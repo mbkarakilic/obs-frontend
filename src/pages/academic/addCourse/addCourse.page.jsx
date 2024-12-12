@@ -7,8 +7,9 @@ import useFetchDepartments from "../../../hooks/useFetchDepartments.hook";
 
 const AddCourse = () => {
   const [courseName, setCourseName] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState(""); // Seçilen departmanın ID'si
-  const [semester, setSemester] = useState(""); // Yeni departman ID durumu
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [semester, setSemester] = useState("");
+  const [ects, setEcts] = useState(""); // AKTS için state
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const { departments } = useFetchDepartments();
@@ -20,8 +21,9 @@ const AddCourse = () => {
 
     const formData = new FormData();
     formData.append("courseName", courseName);
-    formData.append("department_id", selectedDepartment); // Seçilen departman ID'sini kullan
-    formData.append("semester", semester); // Yeni departman ID'sini gönder
+    formData.append("department_id", selectedDepartment);
+    formData.append("semester", semester);
+    formData.append("ects", ects); // AKTS değerini gönder
 
     const res = await fetch(API_URL + "addCourse/", {
       method: "POST",
@@ -36,7 +38,9 @@ const AddCourse = () => {
       if (data.success) {
         toast.success("Kayıt Başarılı!");
         setCourseName("");
-        setSelectedDepartment(""); // Seçimi sıfırla
+        setSelectedDepartment("");
+        setSemester("");
+        setEcts(""); // AKTS alanını sıfırla
       } else {
         toast.error("Hata oluştu!");
       }
@@ -54,9 +58,7 @@ const AddCourse = () => {
           placeholder="Ders adı"
           value={courseName}
           required
-          onChange={(e) => {
-            setCourseName(e.target.value);
-          }}
+          onChange={(e) => setCourseName(e.target.value)}
         />
         <select
           value={selectedDepartment}
@@ -87,6 +89,16 @@ const AddCourse = () => {
             </option>
           ))}
         </select>
+        <input
+          type="number"
+          min="1"
+          max="6"
+          className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="AKTS"
+          value={ects}
+          required
+          onChange={(e) => setEcts(e.target.value)}
+        />
         <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 active:bg-blue-700 disabled:bg-gray-900"

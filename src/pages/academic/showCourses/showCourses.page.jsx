@@ -86,6 +86,7 @@ const ShowCourses = () => {
               <th className="border px-4 py-2">İsim</th>
               <th className="border px-4 py-2">Bölüm</th>
               <th className="border px-4 py-2">Dönem</th>
+              <th className="border px-4 py-2">AKTS</th>
               <th className="border px-4 py-2">İşlemler</th>
             </tr>
           </thead>
@@ -100,6 +101,7 @@ const ShowCourses = () => {
                       .name
                   }
                 </td>
+                <td className="border px-4 py-2">{course.ects}</td>
                 <td className="border px-4 py-2">
                   <button
                     className="bg-red-500 rounded p-2 text-white"

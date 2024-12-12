@@ -4,13 +4,17 @@ import { Container } from "../../../components/container/container.component";
 import { validateAll } from "../../../../helpers";
 import { API_URL } from "../../../../constants";
 import { Form } from "../../../components/form/form.component";
+import useFetchDepartments from "../../../hooks/useFetchDepartments.hook";
 
 const AddAcademician = () => {
   const [nationalId, setNationalId] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState(""); // Seçilen departmanın ID'si
   const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const { departments } = useFetchDepartments();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +35,7 @@ const AddAcademician = () => {
     formData.append("lastname", lastname);
     formData.append("nationalId", nationalId);
     formData.append("isAdmin", isAdmin ? 1 : 0);
-    formData.append("department_id", 1);
+    formData.append("department_id", selectedDepartment);
 
     const res = await fetch(API_URL + "addAcademician/", {
       method: "POST",
@@ -90,6 +94,21 @@ const AddAcademician = () => {
             setLastname(e.target.value);
           }}
         />
+        <select
+          value={selectedDepartment}
+          onChange={(e) => setSelectedDepartment(e.target.value)}
+          required
+          className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled>
+            Departman Seçiniz
+          </option>
+          {departments.map((department) => (
+            <option key={department.id} value={department.id}>
+              {department.name}
+            </option>
+          ))}
+        </select>
         <span>
           Admin
           <input

@@ -25,6 +25,7 @@ const EditExam = () => {
   const [selectedDate, setSelectedDate] = useState(exam.exam_date); // Tarih state'i
   const [type, setType] = useState(exam.exam_type);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [percent, setPercent] = useState(exam.exam_percent); // Tarih state'i
 
   useEffect(() => {
     const fetchMyCourses = async () => {
@@ -65,9 +66,14 @@ const EditExam = () => {
 
     const formData = new FormData();
     formData.append("id", exam.exam_id);
-    formData.append("course_id", selectedCourse);
+    const courseId = courses.find(
+      (course) => course.course_name === selectedCourse
+    ).course_id;
+    console.log(courseId);
+    formData.append("course_id", courseId);
     formData.append("date", selectedDate);
     formData.append("type", type);
+    formData.append("percent", percent);
 
     const res = await fetch(API_URL + "editExam/", {
       method: "post",
@@ -130,6 +136,23 @@ const EditExam = () => {
             </option>
           ))}
         </select>
+        <div className="space-y-4">
+          <label htmlFor="percent" className="block text-lg font-semibold">
+            Yüzdelik
+          </label>
+          <input
+            id="percent"
+            type="number"
+            value={percent}
+            min={1}
+            max={100}
+            onChange={(e) => {
+              setPercent(e.target.value);
+            }}
+            required
+            className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+        </div>
         {/* Tarih Girişi */}
         <input
           type="date"
